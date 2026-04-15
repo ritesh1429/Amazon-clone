@@ -19,23 +19,33 @@ if (missing.length) {
   process.exit(1);
 }
 
-// Allowed origins — local dev + deployed frontend
+// Allowed origins — local dev + deployed frontend + Render self
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
-  'https://amazon-clone-six-amber.vercel.app',
-  process.env.CLIENT_URL,
+  'https://amazon-clone-six-amber.vercel.app', // Vercel frontend
+  'https://amazon-clone-tiv4.onrender.com',    // Render backend (health checks)
+  process.env.CLIENT_URL,                       // override via env if needed
 ].filter(Boolean);
+
+console.log('🌐 CORS allowed origins:', allowedOrigins);
 
 // Middleware
 app.use(cors({
   origin: (origin, callback) => {
+    // Allow no-origin requests (Postman, curl, Render health checks)
     if (!origin) return callback(null, true);
     if (allowedOrigins.includes(origin)) return callback(null, true);
-    callback(new Error(`CORS blocked: ${origin}`));
+    console.warn(`⚠️  CORS rejected: ${origin}`);
+    callback(new Error(`CORS blocked for origin: ${origin}`));
   },
-  credentials: true,
+  credentials: false, // set true only if using cookies
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+
+// Handle preflight OPTIONS for all routes
+app.options('*', cors());
 app.use(express.json());
 
 // Routes
