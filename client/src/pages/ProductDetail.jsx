@@ -14,6 +14,7 @@ export default function ProductDetail() {
   const [quantity, setQuantity] = useState(1);
   const [toast, setToast] = useState('');
   const [activeTab, setActiveTab] = useState('description');
+  const [selectedImageIdx, setSelectedImageIdx] = useState(0);
 
   useEffect(() => {
     setLoading(true);
@@ -59,10 +60,37 @@ export default function ProductDetail() {
         </nav>
 
         <div className="detail-layout">
-          {/* Left: Image */}
+          {/* Left: Image Carousel */}
           <div className="detail-image-section">
+            <div className="detail-carousel-thumbnails">
+              {[
+                product.image_url,
+                product.image_url.replace('400/400', '401/401'),
+                product.image_url.replace('400/400', '402/402'),
+                product.image_url.replace('400/400', '403/403')
+              ].map((img, idx) => (
+                <div 
+                  key={idx} 
+                  className={`thumbnail-wrapper ${selectedImageIdx === idx ? 'selected' : ''}`}
+                  onMouseEnter={() => setSelectedImageIdx(idx)}
+                  onClick={() => setSelectedImageIdx(idx)}
+                >
+                  <img src={img} alt={`View ${idx+1}`} className="thumbnail-img" />
+                </div>
+              ))}
+            </div>
+
             <div className="detail-image-wrapper">
-              <img src={product.image_url} alt={product.name} className="detail-image" />
+              <img 
+                src={[
+                  product.image_url,
+                  product.image_url.replace('400/400', '401/401'),
+                  product.image_url.replace('400/400', '402/402'),
+                  product.image_url.replace('400/400', '403/403')
+                ][selectedImageIdx]} 
+                alt={product.name} 
+                className="detail-image" 
+              />
               {product.badge && (
                 <span className={`badge ${product.badge === 'Best Seller' ? 'badge-best-seller' : 'badge-amazons-choice'}`}>
                   {product.badge}
