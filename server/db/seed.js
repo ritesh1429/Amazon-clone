@@ -54,16 +54,54 @@ const products = [
   { name: 'Funskool Monopoly Classic Board Game', description: 'The world\'s most popular family board game. Includes gameboard, money, title deed cards.', price: 699, original_price: 1099, image_url: 'https://picsum.photos/seed/monopoly/400/400', category: 'Toys', rating: 4.5, review_count: 18765, stock: 180, badge: null },
   { name: 'Barbie Dreamhouse Adventures Doll & Accessories', description: 'Inspired by the Netflix animated series! Barbie doll comes with 10+ accessories.', price: 2499, original_price: 3499, image_url: 'https://picsum.photos/seed/barbiedream/400/400', category: 'Toys', rating: 4.6, review_count: 9876, stock: 90, badge: 'Best Seller' },
   { name: 'Play-Doh Kitchen Creations Ultimate Ice Cream Truck', description: '27 tools and accessories, 11 cans of Play-Doh including 3 brand new colors.', price: 1499, original_price: 2499, image_url: 'https://picsum.photos/seed/playdoh/400/400', category: 'Toys', rating: 4.4, review_count: 7654, stock: 120, badge: null },
+  { name: 'UNO Playing Card Game', description: 'The classic family card game of matching colors and numbers.', price: 149, original_price: 199, image_url: 'https://picsum.photos/seed/unocards/400/400', category: 'Toys', rating: 4.8, review_count: 110200, stock: 600, badge: 'Best Seller' },
+  { name: 'Hasbro Jenga Classic Game', description: 'The original wood block stacking game. Pull out a block without crashing the stack!', price: 899, original_price: 1299, image_url: 'https://picsum.photos/seed/jenga/400/400', category: 'Toys', rating: 4.7, review_count: 45600, stock: 120, badge: null },
+
+  // Extra Electronics
+  { name: 'Apple iPad Pro 11-inch (M2)', description: 'Brilliant Liquid Retina display. M2 chip. Supports Apple Pencil (2nd gen).', price: 81900, original_price: 89900, image_url: 'https://picsum.photos/seed/ipadpro/400/400', category: 'Electronics', rating: 4.8, review_count: 5120, stock: 45, badge: null },
+  { name: 'Sony PlayStation 5 Console', description: 'Experience lightning-fast loading with an ultra-high speed SSD and 3D Audio technology.', price: 54990, original_price: 54990, image_url: 'https://picsum.photos/seed/ps5/400/400', category: 'Electronics', rating: 4.9, review_count: 14200, stock: 10, badge: 'Best Seller' },
+
+  // Extra Books
+  { name: 'Sapiens: A Brief History of Humankind', description: 'From a renowned historian comes a groundbreaking narrative of humanity’s creation and evolution.', price: 450, original_price: 699, image_url: 'https://picsum.photos/seed/sapiens/400/400', category: 'Books', rating: 4.7, review_count: 85200, stock: 150, badge: "Amazon's Choice" },
+  { name: 'Think and Grow Rich', description: 'The landmark bestseller that teaches you the principles of success.', price: 150, original_price: 299, image_url: 'https://picsum.photos/seed/thinkrich/400/400', category: 'Books', rating: 4.6, review_count: 102500, stock: 300, badge: null },
+
+  // Extra Clothing
+  { name: 'PUMA Men\'s Smash v2 L Sneakers', description: 'Classic tennis-inspired silhouette. Durable leather upper and grippy rubber outsole.', price: 1999, original_price: 3499, image_url: 'https://picsum.photos/seed/pumashoes/400/400', category: 'Clothing', rating: 4.4, review_count: 18230, stock: 75, badge: null },
+  { name: 'Allen Solly Men\'s Regular Fit Polo', description: 'Solid cotton polo shirt with contrast tipping on collar and cuffs.', price: 699, original_price: 1099, image_url: 'https://picsum.photos/seed/allenpolo/400/400', category: 'Clothing', rating: 4.2, review_count: 3100, stock: 220, badge: 'Best Seller' },
+
+  // Extra Home
+  { name: 'Pigeon by Stovekraft Amaze Plus Electric Kettle', description: '1.5 Litre, 1500 Watt electric kettle with stainless steel body.', price: 599, original_price: 1195, image_url: 'https://picsum.photos/seed/pigeonkettle/400/400', category: 'Home & Kitchen', rating: 4.3, review_count: 124500, stock: 500, badge: 'Best Seller' },
+  { name: 'Wakefit Orthopedic Memory Foam Mattress', description: '72x60x6 inches King Size mattress with breathable fabric.', price: 11499, original_price: 18499, image_url: 'https://picsum.photos/seed/wakefitmattress/400/400', category: 'Home & Kitchen', rating: 4.6, review_count: 53100, stock: 20, badge: "Amazon's Choice" },
+
+  // Extra Sports
+  { name: 'Decathlon Quechua 10L Backpack', description: 'Lightweight hiking backpack for adults and kids. Extremely durable.', price: 399, original_price: 499, image_url: 'https://picsum.photos/seed/quechua/400/400', category: 'Sports', rating: 4.5, review_count: 42100, stock: 400, badge: 'Best Seller' },
+  { name: 'Kobo Exercise Yoga Mat 6mm', description: 'Anti-slip yoga mat with carrying strap. Perfect for home workouts.', price: 499, original_price: 999, image_url: 'https://picsum.photos/seed/yogamat/400/400', category: 'Sports', rating: 4.3, review_count: 8900, stock: 150, badge: null },
 ];
 
 async function seed() {
   await initDB();
   const db = await getPool();
 
+  const isForce = process.argv.includes('--force');
+
+  if (isForce) {
+    console.log('⚠️ --force flag active: Wiping existing data...');
+    // Delete in correct foreign-key order
+    await db.execute('SET FOREIGN_KEY_CHECKS = 0');
+    await db.execute('TRUNCATE TABLE order_items');
+    await db.execute('TRUNCATE TABLE orders');
+    await db.execute('TRUNCATE TABLE cart_items');
+    await db.execute('TRUNCATE TABLE products');
+    await db.execute('TRUNCATE TABLE categories');
+    await db.execute('TRUNCATE TABLE users');
+    await db.execute('SET FOREIGN_KEY_CHECKS = 1');
+    console.log('✅ Wiped successfully.');
+  }
+
   // Check if already seeded
   const [existing] = await db.execute('SELECT COUNT(*) as count FROM categories');
   if (existing[0].count > 0) {
-    console.log('✅ Database already seeded. Skipping...');
+    console.log('✅ Database already seeded. Use "node db/seed.js --force" to wipe and re-seed.');
     process.exit(0);
   }
 
