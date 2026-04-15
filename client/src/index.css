@@ -1,0 +1,221 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* =========================================
+   AMAZON CLONE — GLOBAL DESIGN TOKENS
+   ========================================= */
+:root {
+  --amazon-dark: #131921;
+  --amazon-navy: #1a2a3a;
+  --amazon-blue: #232f3e;
+  --amazon-orange: #febd69;
+  --amazon-orange-hover: #f3a847;
+  --amazon-yellow: #f0c14b;
+  --amazon-yellow-hover: #ddb347;
+  --amazon-green: #007600;
+  --amazon-red: #B12704;
+  --amazon-light-blue: #007185;
+  --amazon-link: #007185;
+  --amazon-white: #ffffff;
+  --amazon-bg: #eaeded;
+  --amazon-card-bg: #ffffff;
+  --amazon-border: #ddd;
+  --amazon-text: #0f1111;
+  --amazon-text-secondary: #565959;
+  --amazon-star: #ff9900;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.12);
+  --shadow-lg: 0 4px 20px rgba(0,0,0,0.15);
+  --radius: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --transition: 0.2s ease;
+}
+
+/* =========================================
+   RESET & BASE
+   ========================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', 'Amazon Ember', Arial, sans-serif;
+  background-color: var(--amazon-bg);
+  color: var(--amazon-text);
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5 { font-weight: 700; line-height: 1.3; }
+
+a { color: var(--amazon-link); text-decoration: none; }
+a:hover { color: var(--amazon-orange); text-decoration: underline; }
+
+img { max-width: 100%; height: auto; display: block; }
+
+button { cursor: pointer; font-family: inherit; border: none; outline: none; }
+
+/* =========================================
+   GLOBAL LAYOUT
+   ========================================= */
+.container { max-width: 1500px; margin: 0 auto; padding: 0 16px; }
+.page-wrapper { min-height: calc(100vh - 70px); padding: 20px 0; }
+
+/* =========================================
+   BUTTONS
+   ========================================= */
+.btn-primary {
+  background: linear-gradient(to bottom, #f7e0a0, var(--amazon-yellow));
+  border: 1px solid #c89411;
+  border-radius: var(--radius);
+  color: var(--amazon-text);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 20px;
+  transition: all var(--transition);
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.btn-primary:hover {
+  background: linear-gradient(to bottom, #f5d78e, var(--amazon-yellow-hover));
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-orange {
+  background: linear-gradient(to bottom, #f7ca5a, var(--amazon-orange));
+  border: 1px solid #c89411;
+  border-radius: var(--radius);
+  color: var(--amazon-text);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 20px;
+  transition: all var(--transition);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.btn-orange:hover {
+  background: linear-gradient(to bottom, #f3bc3e, var(--amazon-orange-hover));
+}
+
+.btn-add-to-cart {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(to bottom, #f7e0a0, var(--amazon-yellow));
+  border: 1px solid #c89411;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--amazon-text);
+  transition: all var(--transition);
+}
+.btn-add-to-cart:hover {
+  background: linear-gradient(to bottom, #f5d78e, var(--amazon-yellow-hover));
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+.btn-buy-now {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(to bottom, #f7ca5a, var(--amazon-orange));
+  border: 1px solid #c89411;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--amazon-text);
+  transition: all var(--transition);
+}
+.btn-buy-now:hover { background: linear-gradient(to bottom, #f3bc3e, var(--amazon-orange-hover)); }
+
+/* =========================================
+   STAR RATING
+   ========================================= */
+.stars { color: var(--amazon-star); display: inline-flex; gap: 1px; }
+.rating-count { color: var(--amazon-link); font-size: 13px; margin-left: 4px; }
+
+/* =========================================
+   BADGE
+   ========================================= */
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.badge-best-seller { background: #e67e00; color: white; }
+.badge-amazons-choice { background: #232f3e; color: white; }
+.badge-deal { background: #c40000; color: white; }
+
+/* =========================================
+   PRICE
+   ========================================= */
+.price-block { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+.price-current { color: var(--amazon-red); font-size: 22px; font-weight: 700; }
+.price-original { color: var(--amazon-text-secondary); font-size: 13px; text-decoration: line-through; }
+.price-discount { color: var(--amazon-green); font-size: 13px; font-weight: 600; }
+.price-symbol { font-size: 14px; font-weight: 700; color: var(--amazon-red); vertical-align: super; }
+
+/* =========================================
+   LOADING SPINNER
+   ========================================= */
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 0;
+}
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--amazon-border);
+  border-top-color: var(--amazon-orange);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* =========================================
+   SCROLLBAR
+   ========================================= */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #bbb; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #999; }
+
+/* =========================================
+   TOAST NOTIFICATION
+   ========================================= */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #232f3e;
+  color: white;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: var(--shadow-lg);
+  animation: slideIn 0.3s ease, fadeOut 0.5s ease 2.5s forwards;
+}
+@keyframes slideIn { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes fadeOut { to { opacity: 0; transform: translateY(10px); } }
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+@media (max-width: 768px) {
+  .container { padding: 0 10px; }
+}
