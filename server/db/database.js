@@ -6,24 +6,23 @@ let pool = null;
 async function getPool() {
   if (pool) return pool;
 
-  // Create DB if it doesn't exist
-  const tempConn = await mysql.createConnection({
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
-  });
-  await tempConn.execute(`CREATE DATABASE IF NOT EXISTS \`${process.env.DB_NAME || 'amazon_clone'}\``);
-  await tempConn.end();
-
+  // Aiven Cloud MySQL — port + SSL required
   pool = mysql.createPool({
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME || 'amazon_clone',
+    host:     process.env.DB_HOST,
+    port:     Number(process.env.DB_PORT) || 3306,
+    user:     process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    ssl: { rejectUnauthorized: false }, // Aiven uses self-signed cert
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
   });
+
+  // Verify connection on startup
+  const conn = await pool.getConnection();
+  console.log(`✅ Connected to MySQL @ ${process.env.DB_HOST}:${process.env.DB_PORT}`);
+  conn.release();
 
   return pool;
 }
@@ -101,7 +100,7 @@ async function initDB() {
     )
   `);
 
-  console.log('✅ Database tables initialized');
+  console.log('✅ All tables initialized');
   return db;
 }
 

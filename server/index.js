@@ -10,8 +10,32 @@ const ordersRouter = require('./routes/orders');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// ── Validate required env vars before starting ──────────────────────────────
+const REQUIRED_ENV = ['DB_HOST', 'DB_PORT', 'DB_USER', 'DB_PASSWORD', 'DB_NAME'];
+const missing = REQUIRED_ENV.filter(k => !process.env[k]);
+if (missing.length) {
+  console.error('❌ Missing required environment variables:', missing.join(', '));
+  console.error('   Set them in Render → Environment or in server/.env locally.');
+  process.exit(1);
+}
+
+// Allowed origins — local dev + deployed frontend
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://amazon-clone-six-amber.vercel.app',
+  process.env.CLIENT_URL,
+].filter(Boolean);
+
 // Middleware
-app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    callback(new Error(`CORS blocked: ${origin}`));
+  },
+  credentials: true,
+}));
 app.use(express.json());
 
 // Routes
@@ -44,6 +68,8 @@ initDB()
     });
   })
   .catch(err => {
-    console.error('❌ Failed to initialize database:', err.message);
+    console.error('❌ DB init failed:', err.message);
+    console.error('   Check DB credentials and that Aiven allows connections from Render IPs.');
     process.exit(1);
   });
+
