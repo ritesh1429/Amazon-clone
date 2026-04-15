@@ -75,10 +75,10 @@ export default function Navbar() {
         </div>
 
         {/* Returns */}
-        <div className="navbar-returns">
+        <Link to="/orders" className="navbar-returns" style={{ textDecoration: 'none' }}>
           <span className="returns-label">Returns</span>
           <span className="returns-name">& Orders</span>
-        </div>
+        </Link>
 
         {/* Cart */}
         <Link to="/cart" className="navbar-cart" id="nav-cart">

@@ -60,6 +60,34 @@ router.post('/', async (req, res) => {
 
     await conn.commit();
 
+    // -- Bonus: Email Notification --
+    try {
+      const nodemailer = require('nodemailer');
+      let testAccount = await nodemailer.createTestAccount();
+      let transporter = nodemailer.createTransport({
+        host: "smtp.ethereal.email",
+        port: 587,
+        secure: false, 
+        auth: {
+          user: testAccount.user, 
+          pass: testAccount.pass, 
+        },
+      });
+
+      let info = await transporter.sendMail({
+        from: '"Amazon Clone" <no-reply@amazon-clone.com>',
+        to: "john.doe@example.com", // In a real app, use the actual user's email
+        subject: `Order Confirmation #${orderId}`,
+        html: `<h2>Thank you for your order!</h2>
+               <p>Your order <b>#${String(orderId).padStart(6, '0')}</b> for ₹${Number(total).toLocaleString('en-IN')} has been placed successfully.</p>
+               <p>Estimated Delivery: 3 days</p>`,
+      });
+      console.log('✉️ Order Email sent: %s', info.messageId);
+      console.log('✉️ Preview URL: %s', nodemailer.getTestMessageUrl(info));
+    } catch(e) {
+      console.error('Failed to send email:', e);
+    }
+
     res.json({
       success: true,
       message: 'Order placed successfully',

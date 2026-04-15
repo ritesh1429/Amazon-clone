@@ -1,0 +1,34 @@
+.orders-page { background: var(--amazon-bg); min-height: 80vh; padding: 16px 0 40px; }
+.orders-title { font-size: 28px; font-weight: 500; margin: 10px 0 20px; }
+.orders-list { display: flex; flex-direction: column; gap: 20px; }
+
+.order-card { border: 1px solid #d5d9d9; border-radius: 8px; background: white; overflow: hidden; }
+.order-header { background: #f0f2f2; padding: 14px 18px; border-bottom: 1px solid #d5d9d9; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 13px; color: #565959; }
+.order-header-left { display: flex; gap: 30px; }
+.order-meta { display: flex; flex-direction: column; gap: 4px; }
+.order-meta-label { text-transform: uppercase; font-size: 11px; font-weight: 600; }
+.order-address-truncate { color: var(--amazon-link); cursor: pointer; }
+
+.order-header-right { text-align: right; }
+.order-details-link { color: var(--amazon-link); text-decoration: none; font-weight: 500; font-size: 13px; }
+.order-details-link:hover { text-decoration: underline; color: var(--amazon-orange); }
+
+.order-body { padding: 18px; }
+.order-status { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--amazon-text); }
+
+.order-items { display: flex; flex-direction: column; gap: 16px; }
+.order-item { display: flex; gap: 16px; align-items: flex-start; }
+.order-item-img { width: 90px; height: 90px; object-fit: contain; }
+.order-item-info { flex: 1; }
+.order-item-name { display: block; color: var(--amazon-link); font-weight: 600; text-decoration: none; margin-bottom: 4px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.order-item-name:hover { text-decoration: underline; color: var(--amazon-orange); }
+.order-item-qty { font-size: 14px; color: #565959; margin-bottom: 12px; }
+
+.btn-buy-again { display: inline-flex; align-items: center; justify-content: center; background: #ffd814; border: 1px solid #fcd200; border-radius: 20px; padding: 6px 14px; font-size: 13px; color: #0f1111; text-decoration: none; transition: 0.2s; white-space: nowrap; cursor: pointer; }
+.btn-buy-again:hover { background: #f7ca00; border-color: #f2c200; }
+
+@media (max-width: 600px) {
+  .order-header { flex-direction: column; gap: 12px; }
+  .order-header-left { gap: 15px; flex-wrap: wrap; }
+  .order-header-right { text-align: left; }
+}

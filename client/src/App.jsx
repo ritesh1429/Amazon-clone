@@ -8,6 +8,7 @@ import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import OrderSuccess from './pages/OrderSuccess';
+import Orders from './pages/Orders';
 import './index.css';
 
 export default function App() {
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/orders" element={<Orders />} />
           <Route path="/order-success/:id" element={<OrderSuccess />} />
         </Routes>
         <Footer />
