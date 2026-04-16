@@ -8,6 +8,10 @@ router.get('/', async (req, res) => {
     const db = await getPool();
     const { category, search, limit = 50 } = req.query;
 
+    // Sanitise limit to a safe integer — interpolated directly to avoid
+    // ER_WRONG_ARGUMENTS from mysql2 prepared statements with LIMIT ?
+    const safeLimit = Math.max(1, Math.min(200, parseInt(limit, 10) || 50));
+
     let query = `
       SELECT p.*, c.name AS category_name, c.icon AS category_icon
       FROM products p
@@ -25,8 +29,7 @@ router.get('/', async (req, res) => {
       params.push(`%${search}%`, `%${search}%`);
     }
 
-    query += ' LIMIT ?';
-    params.push(Number(limit));
+    query += ` LIMIT ${safeLimit}`;
 
     const [rows] = await db.execute(query, params);
     res.json({ success: true, data: rows });
