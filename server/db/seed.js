@@ -170,11 +170,18 @@ async function seed() {
 
   // Seed products
   for (const p of products) {
+    let safeImageUrl = p.image_url;
+    if (safeImageUrl.includes('picsum.photos')) {
+      const match = safeImageUrl.match(/seed\/([^\/]+)/);
+      const seedText = match ? match[1] : 'Product';
+      safeImageUrl = `https://placehold.co/400x400/232f3e/ffffff?text=${seedText}`;
+    }
+
     await db.execute(
       `INSERT INTO products 
         (name, description, price, original_price, image_url, category_id, rating, review_count, stock, badge) 
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [p.name, p.description, p.price, p.original_price, p.image_url,
+      [p.name, p.description, p.price, p.original_price, safeImageUrl,
        categoryIds[p.category], p.rating, p.review_count, p.stock, p.badge || null]
     );
   }
